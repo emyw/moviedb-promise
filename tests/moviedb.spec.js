@@ -104,7 +104,7 @@ describe('moviedb-promise', function () {
     })
   }
 
-  it(`should not receive an ECONNRESET error from axios`, () => {
+  it(`should not receive an ECONNRESET error from fetch`, () => {
     const promises = []
 
     for (let i = 0; i < 30; i++) {

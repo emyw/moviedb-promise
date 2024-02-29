@@ -25,7 +25,7 @@ The vast amount of data gathered and stored by TMDB can be accessed via its API.
 
 - Each tmdb function has the correct parameter and response types based on the documentation
 - `append_to_response` should be added to the request parameter of the appropriate functions and not on the options
-- The last parameter to each function can be an axios config object and will overwrite anything on the underlying request.
+- The last parameter to each function can be a fetch options object.
 - Several functions have been renamed.
 - Search functions accept a string and will be used for the `query` property.
 
@@ -36,7 +36,7 @@ The vast amount of data gathered and stored by TMDB can be accessed via its API.
 - The `MovieDb` class has been moved to be a property of the package export. You will need to reference the `MovieDb` property of the export in order to instantiate the class. See usage below for an example.
 - The constructor has been changed to accept only two parameters: an api key and the base url for tmdb.
 - The `session()` function has been renamed to `retrieveSession()`
-- Requests were previously made using [superagent](https://www.npmjs.com/package/superagent) as it was used by the [original `moviedb` package](https://github.com/impronunciable/moviedb). It has been replaced with [axios](https://www.npmjs.com/package/axios) now.
+- Requests were previously made using [superagent](https://www.npmjs.com/package/superagent) as it was used by the [original `moviedb` package](https://github.com/impronunciable/moviedb). It was then replaced with [axios](https://www.npmjs.com/package/axios), and then replaced again with a basic fetch.
 
 ## Integrations
 
@@ -408,11 +408,11 @@ const res = await api.tvInfo({
 
 ### Request Options
 
-The last parameter of the endpoint function calls is an [axios request config object](https://github.com/axios/axios#request-config). Those settings will overwrite anything on the underlying request.
+The last parameter of the endpoint function calls is a fetch options object.
 
 ```js
-// Add a timeout restriction to the request
-const res = await api.tvInfo(4629, { timeout: 10000 })
+// Add a custom header to the request
+const res = await api.tvInfo(4629, { headers: { "accept-encoding": "gzip, deflate" } })
 ```
 
 or when combining multiple options append_to_response is desired:
@@ -424,7 +424,7 @@ const res = await api.tvInfo(
     append_to_response: 'season/1,season/1/credits',
   },
   {
-    timeout: 10000,
+    headers: { "accept-encoding": "gzip, deflate" },
   },
 )
 ```
